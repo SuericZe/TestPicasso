@@ -3,6 +3,7 @@ package com.smallcheric.picasso;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
             "http://i.imgur.com/rLR2cyc.jpg",
             "http://i.imgur.com/SEPdUIx.jpg",
             "http://i.imgur.com/aC9OjaM.jpg",
+            "",
             "http://i.imgur.com/76Jfv9b.jpg",
             "http://i.imgur.com/fUX7EIB.jpg",
             "http://i.imgur.com/syELajx.jpg",
@@ -81,13 +83,22 @@ public class MainActivity extends AppCompatActivity {
             if (convertView==null){
                 convertView = View.inflate(context,R.layout.item_picasso,null);
             }
-
-            //加载图片
-            Picasso
-                    .with(context)
-                    .load(imageUrls[position])
-                    .into((ImageView) convertView);
-
+            ImageView imageView = (ImageView)convertView;
+            if (TextUtils.isEmpty(imageUrls[position])){
+                Picasso
+                        .with(context)
+                        .cancelRequest(imageView);
+                imageView.setImageDrawable(null);
+            }else {
+                //加载图片
+                Picasso
+                        .with(context)
+                        .load(imageUrls[position])
+                        .placeholder(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .noFade()
+                        .into((ImageView) convertView);
+            }
             return convertView;
         }
     }
