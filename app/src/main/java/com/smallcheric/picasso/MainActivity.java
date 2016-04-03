@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
@@ -30,12 +32,32 @@ public class MainActivity extends AppCompatActivity {
             "http://i.imgur.com/Z3QjilA.jpg",
     };
     private ListView lv;
+    private GridView gridView;
+    private Button switchButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lv = (ListView) findViewById(R.id.lv);
+        gridView = (GridView) findViewById(R.id.grid);
+        switchButton = (Button) findViewById(R.id.bt);
+        //切换 ListView 与 GridView 的显示模式
+        switchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (lv.getVisibility()== View.VISIBLE){
+                    lv.setVisibility(View.INVISIBLE);
+                    gridView.setVisibility(View.VISIBLE);
+                }else {
+                    lv.setVisibility(View.VISIBLE);
+                    gridView.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
         lv.setAdapter(new ImageListAdapter(this,imageUrls));
+        gridView.setAdapter(new ImageListAdapter(this,imageUrls));
     }
 
     /**
